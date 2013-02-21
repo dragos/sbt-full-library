@@ -18,6 +18,9 @@ libraryDependencies ++= Seq(
 
 osgiSettings
 
-OsgiKeys.embeddedJars <<= Keys.externalDependencyClasspath in Compile map { deps =>  deps filter { dep => !(dep.data.getName startsWith "scala-") } map {x => println(x); x.data} }
+OsgiKeys.embeddedJars <<= Keys.externalDependencyClasspath in Compile map { deps =>
+  (deps filter { dep => !(dep.data.getName startsWith "scala-") }
+        map { _.data })
+  }
 
 OsgiKeys.exportPackage := Seq("sbt.*")
