@@ -9,11 +9,12 @@ version := "2.1.0-SNAPSHOT"
 resolvers += "Typesafe IDE" at "http://repo.typesafe.com/typesafe/ivy-releases"
 
 libraryDependencies ++= Seq(
-    //"org.scala-sbt" % "compiler_interface" % "0.12.2",
+    "org.scala-sbt" % "compiler_interface" % "0.12.2",
     "org.scala-sbt" % "incremental-compiler" % "0.12.2",
     "org.scala-sbt" % "api" % "0.12.2",
     "org.scala-sbt" % "persist" % "0.12.2",
-	"org.scala-sbt" % "compile" % "0.12.2"
+    "org.scala-sbt" % "classfile" % "0.12.2",
+    "org.scala-sbt" % "compile" % "0.12.2"
 )
 
 osgiSettings
