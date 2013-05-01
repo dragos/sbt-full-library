@@ -14,7 +14,8 @@ libraryDependencies ++= Seq(
     "org.scala-sbt" % "api" % "95.95.95",
     "org.scala-sbt" % "persist" % "95.95.95",
     "org.scala-sbt" % "classfile" % "95.95.95",
-    "org.scala-sbt" % "compile" % "95.95.95"
+    "org.scala-sbt" % "compile" % "95.95.95",
+    "org.scala-sbt" % "compiler-integration" % "95.95.95"
 )
 
 osgiSettings
