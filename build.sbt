@@ -2,27 +2,36 @@
 
 organization := "org.scala-ide"
 
-name := "org.scala-ide.sbt.full.library"
+name := "sbt.full.library"
 
-version := "2.1.0-SNAPSHOT"
+version := "4.0.0-SNAPSHOT"
 
-resolvers += "Typesafe IDE" at "http://repo.typesafe.com/typesafe/ivy-releases"
+//resolvers += "Typesafe IDE" at "http://repo.typesafe.com/typesafe/ivy-releases"
+
+resolvers += Resolver.url("Typesafe Ivy Releases", url("http://repo.typesafe.com/typesafe/ivy-releases"))(Resolver.ivyStylePatterns)
 
 libraryDependencies ++= Seq(
-    "org.scala-sbt" % "compiler-interface" % "95.95.95" artifacts(Artifact("compiler-interface-bin")),
-    "org.scala-sbt" % "incremental-compiler" % "95.95.95",
-    "org.scala-sbt" % "api" % "95.95.95",
-    "org.scala-sbt" % "persist" % "95.95.95",
-    "org.scala-sbt" % "classfile" % "95.95.95",
-    "org.scala-sbt" % "compile" % "95.95.95",
-    "org.scala-sbt" % "compiler-integration" % "95.95.95"
+    "org.scala-sbt" % "compiler-interface" % "0.13.0-M2" artifacts(Artifact("compiler-interface-bin")),
+    "org.scala-sbt" % "incremental-compiler" % "0.13.0-M2",
+    "org.scala-sbt" % "api" % "0.13.0-M2",
+    "org.scala-sbt" % "persist" % "0.13.0-M2",
+    "org.scala-sbt" % "classfile" % "0.13.0-M2",
+    "org.scala-sbt" % "compile" % "0.13.0-M2",
+    "org.scala-sbt" % "compiler-integration" % "0.13.0-M2"
 )
 
+resourceDirectories in Compile := Nil
+
+resourceDirectories in Test := Nil
+
 osgiSettings
+
+//OsgiKeys.exportPackage := Seq("sbt.*")
 
 OsgiKeys.embeddedJars <<= (Keys.externalDependencyClasspath in Compile, Keys.baseDirectory in ThisBuild) map { (deps,base) =>
   deps flatMap { d => d.data.getName match {
     case s if (s.startsWith("scala-")) => None
+    case s if (s.startsWith("launcher-interface")) => None
     case s if (s.startsWith("compiler-interface-src")) => None
     case s if (s.startsWith("compiler-interface-bin")) =>
       val ren=s.replaceFirst("compiler-interface-bin","compiler-interface")
@@ -34,4 +43,9 @@ OsgiKeys.embeddedJars <<= (Keys.externalDependencyClasspath in Compile, Keys.bas
     case _ => Some(d.data)
   }}}
 
-OsgiKeys.exportPackage := Seq("sbt.*")
+OsgiKeys.additionalHeaders := Map(
+  "Embed-Dependency" -> "*;scope=compile|runtime;inline=false",
+  "Embed-Directory" -> ".",
+  "Include-Resource" -> "",
+  "-exportcontents" -> "sbt.*;version=${sbt.version},xsbt.*;version=${sbt.version},xsbti.*;version=${sbt.version},sbinary.*;version=${sbinary.version},jline.*;version=2.10,org.apache.ivy.*;version=2.2.0"
+  )
